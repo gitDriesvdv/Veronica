@@ -26,7 +26,7 @@ Rectangle{
         }
     }
     Rectangle{
-        id: userlist
+        id: loglist
         height: 400
         width: 800
 

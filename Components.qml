@@ -183,7 +183,7 @@ Rectangle {
             anchors.bottom: footer.top
 
             ListView {
-                id: imageListView
+                id: componentListView
                 model: enginioModel // get the data from EnginioModel
                 delegate: compListDelegate
                 clip: true
