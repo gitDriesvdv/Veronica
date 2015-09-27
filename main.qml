@@ -31,14 +31,6 @@ ApplicationWindow {
                 }
             }
         }
-        Label {
-                            id: label
-                            text: "Loading ..."
-                            font.pixelSize: 28
-                            color: "black"
-                            anchors.centerIn: parent
-                            visible: view.status != TabView.Ready
-                        }
         TabView {
             id: view
             width: Screen.width
