@@ -11,6 +11,16 @@ ApplicationWindow {
     width: 1400
     visible: true
     color: "white"
+
+    Label {
+                        id: label
+                        text: "Loading Veronica..."
+                        font.pixelSize: 28
+                        color: "black"
+                        anchors.centerIn: parent
+                        visible: view.status != TabView.Ready
+                    }
+
     Row {
         Column {
             Repeater {
