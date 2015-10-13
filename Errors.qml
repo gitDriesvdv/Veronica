@@ -25,44 +25,124 @@ Rectangle{
             "objectType": "objects.Errors"
         }
     }
-    Rectangle{
-        id: errorlist
-        height: 400
-        width: 800
+    TabView {
+        height: 800
+        width: 1000
+        Tab {
+            title: "Errors"
+            Rectangle{
+                id: errorlist
+                height: 400
+                width: 1000
 
-    ColumnLayout {
+            ColumnLayout {
 
 
-    anchors.margins: 3
-    spacing: 3
-    height: 400
-    width: 800
-    TableView {
-        Layout.fillWidth: true
-        Layout.fillHeight: true
+            anchors.margins: 3
+            spacing: 3
+            height: 400
+            width: 1000
+            TableView {
+                id: errorview
+                Layout.fillWidth: true
+                Layout.fillHeight: true
 
-        TableViewColumn { title: "Date"; role: "createdAt" }
-        TableViewColumn { title: "User"; role: "User" }
-        TableViewColumn { title: "Error"; role: "Error" }
+                TableViewColumn { title: "Date"; role: "createdAt" }
+                TableViewColumn { title: "User"; role: "User" }
+                TableViewColumn { title: "Error"; role: "Error" }
 
-        model: EnginioModel {
-            id: enginioModel
-            client: enginioClient
-            query: {"objectType": "objects.Errors" }
+                model: EnginioModel {
+                    id: enginioModel
+                    client: enginioClient
+                    query: {"objectType": "objects.Errors",
+                            "query" : { "Solved": false} }
+                }
+            }
+
+            Button {
+                id: refreshbutton
+                text: "Refresh"
+                Layout.fillWidth: true
+
+                onClicked: {
+                    var tmp = enginioModel.query
+                    enginioModel.query = null
+                    enginioModel.query = tmp
+                }
+            }
+            Button{
+                text: "Solved"
+                anchors.top: refreshbutton.bottom
+                Layout.fillWidth: true
+                onClicked: {
+                          enginioModel.setProperty(errorview.currentRow, "Solved", "true")
+                          reload()
+                          errorview.update();
+                }
+            }
         }
-    }
-
-    Button {
-        text: "Refresh"
-        Layout.fillWidth: true
-
-        onClicked: {
-            var tmp = enginioModel.query
-            enginioModel.query = null
-            enginioModel.query = tmp
+            }
         }
+        Tab {
+            title: "Solved"
+            Rectangle{
+                id: errorlistSolved
+                height: 400
+                width: 1000
+
+            ColumnLayout {
+
+
+            anchors.margins: 3
+            spacing: 3
+            height: 400
+            width: 1000
+            TableView {
+                id: errorviewSolved
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+
+                TableViewColumn { title: "Date"; role: "createdAt" }
+                TableViewColumn { title: "User"; role: "User" }
+                TableViewColumn { title: "Error"; role: "Error" }
+
+                model: EnginioModel {
+                    id: enginioModelSolved
+                    client: enginioClient
+                    query: {"objectType": "objects.Errors",
+                            "query" : { "Solved": true}}
+                }
+            }
+
+            Button {
+                id: refreshbuttonSolved
+                text: "Refresh"
+                Layout.fillWidth: true
+
+                onClicked: {
+                    var tmp = enginioModelSolved.query
+                    enginioModelSolved.query = null
+                    enginioModelSolved.query = tmp
+                }
+            }
+            Button{
+                text: "remove"
+                anchors.top: refreshbuttonSolved.bottom
+                Layout.fillWidth: true
+                onClicked: {
+                    enginioModelSolved.remove(errorviewSolved.currentRow)
+                }
+            }
+        }
+            }
+        }
+
     }
-}
-    }
+   function reload()
+   {
+       var tmp = enginioModel.query
+       enginioModel.query = null
+       enginioModel.query = tmp
+   }
 }
 
