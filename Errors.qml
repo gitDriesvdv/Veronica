@@ -46,6 +46,7 @@ Rectangle{
                 id: errorview
                 Layout.fillWidth: true
                 Layout.fillHeight: true
+                // resizeColumnsToContents()
 
                 TableViewColumn { title: "Date"; role: "createdAt" }
                 TableViewColumn { title: "User"; role: "User" }
@@ -56,6 +57,9 @@ Rectangle{
                     client: enginioClient
                     query: {"objectType": "objects.Errors",
                             "query" : { "Solved": false} }
+                }
+                onClicked: {
+                    console.log( errorview.model.get(errorview.currentRow).Error);
                 }
             }
 
@@ -77,7 +81,7 @@ Rectangle{
                 onClicked: {
                           enginioModel.setProperty(errorview.currentRow, "Solved", "true")
                           reload()
-                          errorview.update();
+                         // errorview.update();
                 }
             }
         }
